@@ -1,0 +1,18 @@
+{
+  "name": "3d_shape",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LaggeR2204/3D_Shape.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LaggeR2204/3D_Shape/issues"
+  },
+  "homepage": "https://github.com/LaggeR2204/3D_Shape#readme"
+}
