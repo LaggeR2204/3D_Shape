@@ -1,8 +1,9 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
 import { GUI } from "../node_modules/three/examples/jsm/libs/dat.gui.module.js";
-
+import Cube from "./Models/Cube.js";
 $(document).ready(function () {
   const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x444444);
   const camera = new THREE.PerspectiveCamera(
     75,
     $("#canvas-container").innerWidth() / $("#canvas-container").innerHeight(),
@@ -18,26 +19,18 @@ $(document).ready(function () {
   );
   $("#canvas-container").append(renderer.domElement);
 
-  const geometry = new THREE.BoxGeometry();
+  const shape = new Cube(10, 5, 5, 0x00ff00, 0);
+  const mesh = shape.getMesh();
 
-  const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-  const cube = new THREE.Line(geometry, material);
-  scene.add(cube);
+  scene.add(mesh);
 
-  camera.position.z = 5;
+  camera.position.z = 30;
 
   function animate() {
-    // cube.rotation.x += 0.01;
-    // cube.rotation.y += 0.01;
+    mesh.rotation.x += 0.01;
+    mesh.rotation.y += 0.01;
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
   }
   animate();
-  setTimeout(() => {
-    console.log("[]", cube);
-    cube.removeFromParent();
-    cube.material.dispose();
-    cube.geometry.dispose();
-    console.log(cube);
-  }, 2000);
 });

@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LaggeR2204/3D_Shape.git"
@@ -14,5 +13,8 @@
   "bugs": {
     "url": "https://github.com/LaggeR2204/3D_Shape/issues"
   },
-  "homepage": "https://github.com/LaggeR2204/3D_Shape#readme"
+  "homepage": "https://github.com/LaggeR2204/3D_Shape#readme",
+  "dependencies": {
+    "three": "^0.130.1"
+  }
 }
