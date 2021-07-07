@@ -1,6 +1,5 @@
 import * as THREE from "../node_modules/three/build/three.module.js";
 import { GUI } from "../node_modules/three/examples/jsm/libs/dat.gui.module.js";
-import Cube from "./Models/Cube.js";
 import SceneState from "./State/SceneState.js";
 $(document).ready(function () {
   THREE.Object3D.prototype.dispose = function () {
@@ -77,11 +76,11 @@ $(document).ready(function () {
     }
   }
 
-  $('button:contains("Point")').click(function () {
-    updateRenderMode("Point");
+  $(".model").click(function () {
+    updateShape($(this).text());
   });
 
-  $('button:contains("Cube")').click(function () {
-    updateShape("Cube");
+  $(".mode").click(function () {
+    updateRenderMode($(this).text());
   });
 });

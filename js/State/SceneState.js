@@ -19,29 +19,29 @@ export default class SceneState {
 
   updateShape(shape, renderMode = 0, callback) {
     this.prevObject = this.curObject;
-    //NOTE: dat.gui is really weird with string-number alias option, its assigned value is not a string nor number so without parseInt renderMode value pass will fail
+
     renderMode = parseInt(renderMode);
     switch (shape) {
       case "Cube":
-        this.curShape = new Cube(5, 5, 5, 0xff0000, renderMode);
+        this.curShape = new Cube(5, 5, 5, 0x00ff00, renderMode);
         break;
       case "Cone":
-        this.curShape = new Cone(1, 2, 0xff0000, renderMode);
+        this.curShape = new Cone(3, 3, 0x00ff00, renderMode);
         break;
       case "Cylinder":
-        this.curShape = new Cylinder(1, 1, 2, 0xff0000, renderMode);
+        this.curShape = new Cylinder(1, 1, 2, 0x00ff00, renderMode);
         break;
       case "Sphere":
-        this.curShape = new Sphere(1, 0xff0000, renderMode);
+        this.curShape = new Sphere(1, 0x00ff00, renderMode);
         break;
       case "Icosahedron":
-        this.curShape = new Icosahedron(1, 0xff00000, renderMode);
+        this.curShape = new Icosahedron(1, 0x00ff00, renderMode);
         break;
       case "Torus":
-        this.curShape = new Torus(1, 0.3, 0xff0000, renderMode);
+        this.curShape = new Torus(1, 0.3, 0x00ff00, renderMode);
         break;
       case "Teapot":
-        this.curShape = new Teapot(1, 0xff0000, renderMode);
+        this.curShape = new Teapot(2, 0x00ff00, renderMode);
         break;
       default:
     }

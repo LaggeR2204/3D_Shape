@@ -29,9 +29,9 @@ export default class Cylinder extends Shape {
       Math.max(parseInt(this.size.h * this.HEIGHT_SEGMENT_RATE), 1)
     );
     let material;
-    if (texture !== undefined) {
+    if (texture) {
       material = new THREE.MeshLambertMaterial({ map: texture });
-    } else material = new THREE.MeshLambertMaterial({ color: this.color });
+    } else material = new THREE.MeshBasicMaterial({ color: this.color });
     return new THREE.Mesh(geometry, material);
   }
 
@@ -56,14 +56,9 @@ export default class Cylinder extends Shape {
       Math.max(parseInt(this.size.rt * this.RADIAL_SEGMENT_RATE), 2),
       1 //Segment at 1 to render only real vertices
     );
-    let geo = new THREE.Geometry();
-
-    for (var i = 0; i < geometry.vertices.length; i++) {
-      geo.vertices.push(geometry.vertices[i]);
-    }
 
     let mat = new THREE.PointsMaterial({ color: this.color, size: 0.01 });
-    let particles = new THREE.Points(geo, mat);
+    let particles = new THREE.Points(geometry, mat);
     particles.sortParticles = true;
     return particles;
   }

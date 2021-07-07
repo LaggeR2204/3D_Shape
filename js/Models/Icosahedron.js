@@ -13,9 +13,12 @@ export default class Icosahedron extends Shape {
   setSolidMesh(texture = undefined) {
     let geometry = new THREE.IcosahedronGeometry(this.size.r, 0);
     let material;
-    if (texture !== undefined) {
+    if (texture) {
       material = new THREE.MeshLambertMaterial({ map: texture });
-    } else material = new THREE.MeshLambertMaterial({ color: this.color });
+    } else
+      material = new THREE.MeshBasicMaterial({
+        color: this.color,
+      });
     return new THREE.Mesh(geometry, material);
   }
 
@@ -28,14 +31,9 @@ export default class Icosahedron extends Shape {
 
   setPointMesh() {
     let geometry = new THREE.IcosahedronGeometry(this.size.r, 0);
-    let geo = new THREE.Geometry();
-
-    for (var i = 0; i < geometry.vertices.length; i++) {
-      geo.vertices.push(geometry.vertices[i]);
-    }
 
     let mat = new THREE.PointsMaterial({ color: this.color, size: 0.01 });
-    let particles = new THREE.Points(geo, mat);
+    let particles = new THREE.Points(geometry, mat);
     particles.sortParticles = true;
     return particles;
   }

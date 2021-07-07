@@ -1,59 +1,43 @@
 import * as THREE from "../../node_modules/three/build/three.module.js";
+
+import { TeapotGeometry } from "../Geometries/TeapotGeometry.js";
+
 import Shape from "./shape.js";
 export default class Teapot extends Shape {
-  constructor(radius, color = 0xffffff, renderMode = 0) {
+  constructor(size, color = 0xffffff, renderMode = 0) {
     super(color, renderMode);
-    this.size = {
-      r: radius,
-    };
+    this.size = size;
     this.RADIAL_SEGMENT_RATE = 12;
     this.mesh = undefined;
     this.setMesh();
   }
 
   setSolidMesh(texture = undefined) {
-    let geometry = new TeapotBufferGeometry(
-      this.size.r,
-      Math.max(parseInt(this.RADIAL_SEGMENT_RATE * this.size.t), 2)
-    );
+    const teapotGeometry = new TeapotGeometry(this.size);
+
     let material;
-    if (texture !== undefined) {
+    if (texture) {
       material = new THREE.MeshLambertMaterial({ map: texture });
-    } else material = new THREE.MeshLambertMaterial({ color: this.color });
-    return new THREE.Mesh(geometry, material);
+    } else
+      material = new THREE.MeshBasicMaterial({
+        color: this.color,
+      });
+    return new THREE.Mesh(teapotGeometry, material);
   }
 
   setWiredMesh() {
-    let geometry = new TeapotBufferGeometry(
-      this.size.r,
-      Math.max(parseInt(this.RADIAL_SEGMENT_RATE * this.size.t), 2)
-    );
-    let geo = new THREE.EdgesGeometry(geometry);
+    const teapotGeometry = new TeapotGeometry(this.size);
+    let geo = new THREE.EdgesGeometry(teapotGeometry);
     let mat = new THREE.LineBasicMaterial({ color: this.color, linewidth: 1 });
     return new THREE.LineSegments(geo, mat);
   }
 
   setPointMesh() {
-    let geometry = new TeapotBufferGeometry(
-      this.size.r,
-      Math.max(parseInt(this.RADIAL_SEGMENT_RATE * this.size.t), 2)
-    );
-    let geo = new THREE.Geometry();
-
-    for (var i = 0; i < geometry.attributes.position.array.length / 3; i++) {
-      geo.vertices.push(
-        new THREE.Vector3(
-          geometry.attributes.position.array[i * 3],
-          geometry.attributes.position.array[i * 3 + 1],
-          geometry.attributes.position.array[i * 3 + 2]
-        )
-      );
-    }
-
+    const teapotGeometry = new TeapotGeometry(this.size);
     let mat = new THREE.PointsMaterial({ color: this.color, size: 0.01 });
-    let particles = new THREE.Points(geo, mat);
-    particles.sortParticles = true;
-    return particles;
+    let object = new THREE.Points(teapotGeometry, mat);
+    object.sortParticles = true;
+    return object;
   }
 
   setMesh(texture = undefined) {

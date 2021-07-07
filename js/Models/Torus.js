@@ -21,9 +21,9 @@ export default class Torus extends Shape {
       Math.max(parseInt(this.TUBULAR_SEGMENT_RATE * this.size.r), 2)
     );
     let material;
-    if (texture !== undefined) {
+    if (texture) {
       material = new THREE.MeshLambertMaterial({ map: texture });
-    } else material = new THREE.MeshLambertMaterial({ color: this.color });
+    } else material = new THREE.MeshBasicMaterial({ color: this.color });
     return new THREE.Mesh(geometry, material);
   }
 
@@ -34,8 +34,9 @@ export default class Torus extends Shape {
       Math.max(parseInt(this.RADIAL_SEGMENT_RATE * this.size.t), 2),
       Math.max(parseInt(this.TUBULAR_SEGMENT_RATE * this.size.r), 2)
     );
-    let geo = new THREE.EdgesGeometry(geometry);
-    let mat = new THREE.LineBasicMaterial({ color: this.color, linewidth: 1 });
+    let geo = new THREE.WireframeGeometry(geometry);
+    const mat = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+
     return new THREE.LineSegments(geo, mat);
   }
 
@@ -46,16 +47,11 @@ export default class Torus extends Shape {
       Math.max(parseInt(this.RADIAL_SEGMENT_RATE * this.size.t), 2),
       Math.max(parseInt(this.TUBULAR_SEGMENT_RATE * this.size.r), 2)
     );
-    let geo = new THREE.Geometry();
-
-    for (var i = 0; i < geometry.vertices.length; i++) {
-      geo.vertices.push(geometry.vertices[i]);
-    }
 
     let mat = new THREE.PointsMaterial({ color: this.color, size: 0.01 });
-    let particles = new THREE.Points(geo, mat);
-    particles.sortParticles = true;
-    return particles;
+    let obj = new THREE.Points(geometry, mat);
+    obj.sortParticles = true;
+    return obj;
   }
 
   setMesh(texture = undefined) {

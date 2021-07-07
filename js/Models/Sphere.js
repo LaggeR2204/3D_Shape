@@ -20,7 +20,7 @@ export default class Sphere extends Shape {
     let material;
     if (texture !== undefined) {
       material = new THREE.MeshLambertMaterial({ map: texture });
-    } else material = new THREE.MeshLambertMaterial({ color: this.color });
+    } else material = new THREE.MeshBasicMaterial({ color: this.color });
     return new THREE.Mesh(geometry, material);
   }
 
@@ -41,14 +41,9 @@ export default class Sphere extends Shape {
       Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2),
       Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2)
     );
-    let geo = new THREE.Geometry();
-
-    for (var i = 0; i < geometry.vertices.length; i++) {
-      geo.vertices.push(geometry.vertices[i]);
-    }
 
     let mat = new THREE.PointsMaterial({ color: this.color, size: 0.01 });
-    let particles = new THREE.Points(geo, mat);
+    let particles = new THREE.Points(geometry, mat);
     particles.sortParticles = true;
     return particles;
   }

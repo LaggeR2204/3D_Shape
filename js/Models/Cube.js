@@ -23,10 +23,15 @@ export default class Cube extends Shape {
       Math.max(parseInt(this.size.d * this.SEGMENT_RATE), 1)
     );
     let material;
-    if (texture !== undefined) {
-      material = new THREE.MeshBasicMaterial({ map: texture });
-    } else material = new THREE.MeshBasicMaterial({ color: this.color });
-    return new THREE.Mesh(geometry, material);
+    if (texture) {
+      material = new THREE.MeshLambertMaterial({ map: texture });
+    } else
+      material = new THREE.MeshBasicMaterial({
+        color: this.color,
+      });
+    const obj = new THREE.Mesh(geometry, material);
+    obj.lookAt(1, 1, 1);
+    return obj;
   }
 
   setWiredMesh() {
@@ -39,7 +44,10 @@ export default class Cube extends Shape {
       Math.max(parseInt(this.size.d * this.SEGMENT_RATE), 1)
     );
     let geo = new THREE.EdgesGeometry(geometry);
-    let mat = new THREE.LineBasicMaterial({ color: this.color, linewidth: 1 });
+    let mat = new THREE.LineBasicMaterial({
+      color: this.color,
+      linewidth: 1,
+    });
     return new THREE.LineSegments(geo, mat);
   }
 
@@ -52,11 +60,6 @@ export default class Cube extends Shape {
       1, //Segment at 1 to render only real vertices
       1 //Segment at 1 to render only real vertices
     );
-    // let geo = new THREE.Geometry();
-
-    // for (var i = 0; i < geometry.vertices.length; i++) {
-    //   geo.vertices.push(geometry.vertices[i]);
-    // }
 
     let mat = new THREE.PointsMaterial({ color: this.color, size: 0.01 });
     let particles = new THREE.Points(geometry, mat);
