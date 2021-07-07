@@ -1,4 +1,4 @@
-import * as THREE from "../../node_modules/three/build/three.module.js";
+import * as THREE from "three";
 import Shape from "./shape.js";
 export default class Cube extends Shape {
   constructor(height, width, depth, color = 0xffffff, renderMode = 0) {

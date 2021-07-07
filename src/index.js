@@ -1,6 +1,7 @@
-import * as THREE from "../node_modules/three/build/three.module.js";
-import { GUI } from "../node_modules/three/examples/jsm/libs/dat.gui.module.js";
+import * as THREE from "three";
+import { GUI } from "GUI";
 import SceneState from "./State/SceneState.js";
+import { OrbitControls } from "OrbitControls";
 $(document).ready(function () {
   THREE.Object3D.prototype.dispose = function () {
     this.geometry.dispose();
@@ -8,6 +9,7 @@ $(document).ready(function () {
   };
   //setup
 
+  //SCENE SETUP
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x444444);
   const camera = new THREE.PerspectiveCamera(
@@ -28,8 +30,28 @@ $(document).ready(function () {
   camera.position.z = 10;
 
   const gui = new GUI();
+  gui.hide();
 
   const sceneState = new SceneState();
+
+  //LIGHT
+
+  const lights = [];
+  lights[0] = new THREE.PointLight(0xffffff, 1, 0);
+  lights[1] = new THREE.PointLight(0xffffff, 1, 0);
+  lights[2] = new THREE.PointLight(0xffffff, 1, 0);
+
+  lights[0].position.set(0, 200, 0);
+  lights[1].position.set(100, 200, 100);
+  lights[2].position.set(-100, -200, -100);
+
+  scene.add(lights[0]);
+  scene.add(lights[1]);
+  scene.add(lights[2]);
+
+  //orbit control
+  const orbit = new OrbitControls(camera, renderer.domElement);
+  orbit.enableZoom = true;
 
   //end setup
 

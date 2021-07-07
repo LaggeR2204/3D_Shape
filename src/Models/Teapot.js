@@ -1,6 +1,6 @@
-import * as THREE from "../../node_modules/three/build/three.module.js";
+import * as THREE from "three";
 
-import { TeapotGeometry } from "../Geometries/TeapotGeometry.js";
+import { TeapotGeometry } from "../../node_modules/three/examples/jsm/geometries/TeapotGeometry.js";
 
 import Shape from "./shape.js";
 export default class Teapot extends Shape {

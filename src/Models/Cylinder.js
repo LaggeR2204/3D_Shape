@@ -1,10 +1,17 @@
-import * as THREE from "../../node_modules/three/build/three.module.js";
+import * as THREE from "three";
 import Shape from "./shape.js";
-export default class Cone extends Shape {
-  constructor(radius, height, color = 0xffffff, renderMode = 0) {
+export default class Cylinder extends Shape {
+  constructor(
+    radiusBottom,
+    radiusTop,
+    height,
+    color = 0xffffff,
+    renderMode = 0
+  ) {
     super(color, renderMode);
     this.size = {
-      r: radius,
+      rt: radiusTop,
+      rb: radiusBottom,
       h: height,
     };
     this.mesh = undefined;
@@ -14,27 +21,26 @@ export default class Cone extends Shape {
   }
 
   setSolidMesh(texture = undefined) {
-    let geometry = new THREE.ConeGeometry(
-      this.size.r,
+    let geometry = new THREE.CylinderGeometry(
+      this.size.rt,
+      this.size.rb,
       this.size.h,
-      Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2),
+      Math.max(parseInt(this.size.rt * this.RADIAL_SEGMENT_RATE), 2),
       Math.max(parseInt(this.size.h * this.HEIGHT_SEGMENT_RATE), 1)
     );
     let material;
     if (texture) {
       material = new THREE.MeshLambertMaterial({ map: texture });
-    } else
-      material = new THREE.MeshBasicMaterial({
-        color: this.color,
-      });
+    } else material = new THREE.MeshBasicMaterial({ color: this.color });
     return new THREE.Mesh(geometry, material);
   }
 
   setWiredMesh() {
-    let geometry = new THREE.ConeGeometry(
-      this.size.r,
+    let geometry = new THREE.CylinderGeometry(
+      this.size.rt,
+      this.size.rb,
       this.size.h,
-      Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2),
+      Math.max(parseInt(this.size.rt * this.RADIAL_SEGMENT_RATE), 2),
       Math.max(parseInt(this.size.h * this.HEIGHT_SEGMENT_RATE), 1)
     );
     let geo = new THREE.EdgesGeometry(geometry);
@@ -43,10 +49,11 @@ export default class Cone extends Shape {
   }
 
   setPointMesh() {
-    let geometry = new THREE.ConeGeometry(
-      this.size.r,
+    let geometry = new THREE.CylinderGeometry(
+      this.size.rt,
+      this.size.rb,
       this.size.h,
-      Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2),
+      Math.max(parseInt(this.size.rt * this.RADIAL_SEGMENT_RATE), 2),
       1 //Segment at 1 to render only real vertices
     );
 

@@ -1,36 +1,46 @@
-import * as THREE from "../../node_modules/three/build/three.module.js";
+import * as THREE from "three";
 import Shape from "./shape.js";
-export default class Icosahedron extends Shape {
+export default class Sphere extends Shape {
   constructor(radius, color = 0xffffff, renderMode = 0) {
     super(color, renderMode);
     this.size = {
       r: radius,
     };
     this.mesh = undefined;
+    this.RADIAL_SEGMENT_RATE = 32;
     this.setMesh();
   }
 
   setSolidMesh(texture = undefined) {
-    let geometry = new THREE.IcosahedronGeometry(this.size.r, 0);
+    let geometry = new THREE.SphereGeometry(
+      this.size.r,
+      Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2),
+      Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2)
+    );
     let material;
-    if (texture) {
+    if (texture !== undefined) {
       material = new THREE.MeshLambertMaterial({ map: texture });
-    } else
-      material = new THREE.MeshBasicMaterial({
-        color: this.color,
-      });
+    } else material = new THREE.MeshBasicMaterial({ color: this.color });
     return new THREE.Mesh(geometry, material);
   }
 
   setWiredMesh() {
-    let geometry = new THREE.IcosahedronGeometry(this.size.r, 0);
+    let geometry = new THREE.SphereGeometry(
+      this.size.r,
+      Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2),
+      Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2)
+    );
     let geo = new THREE.EdgesGeometry(geometry);
     let mat = new THREE.LineBasicMaterial({ color: this.color, linewidth: 1 });
     return new THREE.LineSegments(geo, mat);
   }
 
   setPointMesh() {
-    let geometry = new THREE.IcosahedronGeometry(this.size.r, 0);
+    let geometry = new THREE.SphereGeometry(
+      this.size.r,
+      Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2),
+      Math.max(parseInt(this.size.r * this.RADIAL_SEGMENT_RATE), 2)
+    );
 
     let mat = new THREE.PointsMaterial({ color: this.color, size: 0.01 });
     let particles = new THREE.Points(geometry, mat);
