@@ -28,4 +28,24 @@ export default class Cube extends Shape {
   setMesh(texture = undefined) {
     super.createMesh(this.getGeometry(), texture);
   }
+
+  createGUI(gui, callback) {
+    const { onGeoChange, onColorChange } = callback;
+
+    const folder = gui.addFolder("BoxGeometry");
+
+    super.createGUI(folder, onColorChange);
+
+    folder.add(this.data, "width", 1, 30).onChange(onGeoChange);
+    folder.add(this.data, "height", 1, 30).onChange(onGeoChange);
+    folder.add(this.data, "depth", 1, 30).onChange(onGeoChange);
+    folder.add(this.data, "widthSegments", 1, 10).step(1).onChange(onGeoChange);
+    folder
+      .add(this.data, "heightSegments", 1, 10)
+      .step(1)
+      .onChange(onGeoChange);
+    folder.add(this.data, "depthSegments", 1, 10).step(1).onChange(onGeoChange);
+
+    return folder;
+  }
 }

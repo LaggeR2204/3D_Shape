@@ -17,4 +17,17 @@ export default class Icosahedron extends Shape {
   setMesh(texture = undefined) {
     super.createMesh(this.getGeometry(), texture);
   }
+
+  createGUI(gui, callback) {
+    const { onGeoChange, onColorChange } = callback;
+
+    const folder = gui.addFolder("IcosahedronGeometry");
+
+    super.createGUI(folder, onColorChange);
+
+    folder.add(this.data, "radius", 1, 20).onChange(onGeoChange);
+    folder.add(this.data, "detail", 0, 5).step(1).onChange(onGeoChange);
+
+    return folder;
+  }
 }

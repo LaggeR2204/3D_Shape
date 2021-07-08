@@ -26,4 +26,26 @@ export default class Torus extends Shape {
   setMesh(texture = undefined) {
     super.createMesh(this.getGeometry(), texture);
   }
+
+  createGUI(gui, callback) {
+    const { onGeoChange, onColorChange } = callback;
+
+    const folder = gui.addFolder("THREE.TorusGeometry");
+
+    super.createGUI(folder, onColorChange);
+
+    folder.add(this.data, "radius", 1, 20).onChange(onGeoChange);
+    folder.add(this.data, "tube", 0.1, 10).onChange(onGeoChange);
+    folder
+      .add(this.data, "radialSegments", 2, 30)
+      .step(1)
+      .onChange(onGeoChange);
+    folder
+      .add(this.data, "tubularSegments", 3, 200)
+      .step(1)
+      .onChange(onGeoChange);
+    folder.add(this.data, "arc", 0.1, Math.PI * 2).onChange(onGeoChange);
+
+    return folder;
+  }
 }

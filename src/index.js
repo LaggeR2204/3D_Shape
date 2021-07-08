@@ -4,7 +4,7 @@ import SceneState from "./State/SceneState.js";
 import { OrbitControls } from "OrbitControls";
 $(document).ready(function () {
   THREE.Object3D.prototype.dispose = function () {
-    if (this.children.length == 1) {
+    if (this.children.length === 0) {
       this.geometry.dispose();
       this.material.dispose();
     } else {
@@ -36,9 +36,9 @@ $(document).ready(function () {
 
   camera.position.z = 10;
 
-  const gui = new GUI();
+  const gui = new GUI({ autoPlace: false });
+  $("#gui").append(gui.domElement);
   gui.hide();
-
   const sceneState = new SceneState();
 
   //LIGHT
@@ -69,7 +69,7 @@ $(document).ready(function () {
   animate();
 
   function updateShape(shape) {
-    sceneState.updateShape(shape);
+    sceneState.updateShape(shape, gui);
     if (sceneState.prevObject) {
       scene.remove(sceneState.prevObject);
       sceneState.prevObject.dispose();

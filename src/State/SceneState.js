@@ -12,40 +12,69 @@ export default class SceneState {
     this.curShape = new Cube(1, 1, 1, 0xff0000);
     this.curObject = this.curShape.getMesh();
     this.curTexture = null;
+    this.curGUIFolder = null;
+
     this.onDrag = false;
     this.speed = 0;
     this.accelaretion = 0.001;
   }
 
-  updateShape(shape, renderMode = 3, callback) {
+  updateShape(shape, gui, renderMode = 3) {
     this.prevObject = this.curObject;
-
+    this.curGUIFolder && gui.removeFolder(this.curGUIFolder);
+    this.curGUIFolder = null;
     renderMode = parseInt(renderMode);
     switch (shape) {
       case "Cube":
-        this.curShape = new Cube(5, 5, 5, 0x00ff00, renderMode);
+        this.curShape = new Cube(5, 5, 5, 0x38284b, renderMode);
         break;
       case "Cone":
-        this.curShape = new Cone(3, 3, 0x00ff00, renderMode);
+        this.curShape = new Cone(3, 3, 0x38284b, renderMode);
         break;
       case "Cylinder":
-        this.curShape = new Cylinder(3, 3, 3, 0x00ff00, renderMode);
+        this.curShape = new Cylinder(3, 3, 3, 0x38284b, renderMode);
         break;
       case "Sphere":
-        this.curShape = new Sphere(3, 0x00ff00, renderMode);
+        this.curShape = new Sphere(3, 0x38284b, renderMode);
         break;
       case "Icosahedron":
-        this.curShape = new Icosahedron(3, 0x00ff00, renderMode);
+        this.curShape = new Icosahedron(3, 0x38284b, renderMode);
         break;
       case "Torus":
-        this.curShape = new Torus(5, 1.5, 0x00ff00, renderMode);
+        this.curShape = new Torus(5, 1.5, 0x38284b, renderMode);
         break;
       case "Teapot":
-        this.curShape = new Teapot(2, 0x00ff00, renderMode);
+        this.curShape = new Teapot(2, 0x38284b, renderMode);
         break;
       default:
     }
     this.curObject = this.curShape.getMesh();
+    this.curGUIFolder = this.curShape.createGUI(gui, {
+      onGeoChange: () => {
+        // console.log("control change", this);
+        if (this.curObject.children.length === 0) {
+          this.curObject.geometry.dispose();
+          this.curObject.geometry = this.curShape.getGeometry();
+        } else {
+          this.curObject.children[0].geometry.dispose();
+          this.curObject.children[1].geometry.dispose();
+          this.curObject.children[0].geometry = this.curShape.getGeometry();
+          this.curObject.children[1].geometry = this.curShape.getGeometry();
+        }
+      },
+      onColorChange: (value) => {
+        if (typeof value === "string") {
+          value = value.replace("#", "0x");
+        }
+        if (this.curObject.children.length === 0) {
+          this.curObject.material.color.setHex(value);
+        } else {
+          this.curObject.children[1].material.color.setHex(value);
+        }
+      },
+    });
+    gui.show();
+    this.curGUIFolder.open();
   }
 
   updateTexture() {

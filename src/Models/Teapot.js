@@ -17,4 +17,14 @@ export default class Teapot extends Shape {
   setMesh(texture = undefined) {
     super.createMesh(this.getGeometry(), texture);
   }
+
+  createGUI(gui, callback) {
+    const { onGeoChange, onColorChange } = callback;
+
+    const folder = gui.addFolder("BoxGeometry");
+
+    super.createGUI(folder, onColorChange);
+
+    return folder;
+  }
 }

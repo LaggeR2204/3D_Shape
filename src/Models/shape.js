@@ -70,7 +70,7 @@ export default class Shape {
       opacity: 0.5,
     });
     const meshMaterial = new MeshPhongMaterial({
-      color: 0x156289,
+      color: this.color,
       emissive: 0x072534,
       side: DoubleSide,
       flatShading: false,
@@ -104,5 +104,9 @@ export default class Shape {
 
   getMesh() {
     return this.mesh;
+  }
+
+  createGUI(folder, onColorChange) {
+    folder.addColor(this, "color").onChange(onColorChange);
   }
 }

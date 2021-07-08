@@ -38,4 +38,29 @@ export default class Cylinder extends Shape {
   setMesh(texture = undefined) {
     super.createMesh(this.getGeometry(), texture);
   }
+
+  createGUI(gui, callback) {
+    const { onGeoChange, onColorChange } = callback;
+
+    const folder = gui.addFolder("CylinderGeometry");
+
+    super.createGUI(folder, onColorChange);
+
+    folder.add(this.data, "radiusTop", 0, 30).onChange(onGeoChange);
+    folder.add(this.data, "radiusBottom", 0, 30).onChange(onGeoChange);
+    folder.add(this.data, "height", 1, 50).onChange(onGeoChange);
+    folder
+      .add(this.data, "radialSegments", 3, 64)
+      .step(1)
+      .onChange(onGeoChange);
+    folder
+      .add(this.data, "heightSegments", 1, 64)
+      .step(1)
+      .onChange(onGeoChange);
+    folder.add(this.data, "openEnded").onChange(onGeoChange);
+    folder.add(this.data, "thetaStart", 0, Math.PI * 2).onChange(onGeoChange);
+    folder.add(this.data, "thetaLength", 0, Math.PI * 2).onChange(onGeoChange);
+
+    return folder;
+  }
 }
