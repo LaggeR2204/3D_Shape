@@ -17,7 +17,7 @@ export default class SceneState {
     this.accelaretion = 0.001;
   }
 
-  updateShape(shape, renderMode = 0, callback) {
+  updateShape(shape, renderMode = 3, callback) {
     this.prevObject = this.curObject;
 
     renderMode = parseInt(renderMode);
@@ -29,16 +29,16 @@ export default class SceneState {
         this.curShape = new Cone(3, 3, 0x00ff00, renderMode);
         break;
       case "Cylinder":
-        this.curShape = new Cylinder(1, 1, 2, 0x00ff00, renderMode);
+        this.curShape = new Cylinder(3, 3, 3, 0x00ff00, renderMode);
         break;
       case "Sphere":
-        this.curShape = new Sphere(1, 0x00ff00, renderMode);
+        this.curShape = new Sphere(3, 0x00ff00, renderMode);
         break;
       case "Icosahedron":
-        this.curShape = new Icosahedron(1, 0x00ff00, renderMode);
+        this.curShape = new Icosahedron(3, 0x00ff00, renderMode);
         break;
       case "Torus":
-        this.curShape = new Torus(1, 0.3, 0x00ff00, renderMode);
+        this.curShape = new Torus(5, 1.5, 0x00ff00, renderMode);
         break;
       case "Teapot":
         this.curShape = new Teapot(2, 0x00ff00, renderMode);

@@ -4,8 +4,15 @@ import SceneState from "./State/SceneState.js";
 import { OrbitControls } from "OrbitControls";
 $(document).ready(function () {
   THREE.Object3D.prototype.dispose = function () {
-    this.geometry.dispose();
-    this.material.dispose();
+    if (this.children.length == 1) {
+      this.geometry.dispose();
+      this.material.dispose();
+    } else {
+      this.children[0].geometry.dispose();
+      this.children[0].material.dispose();
+      this.children[1].geometry.dispose();
+      this.children[1].material.dispose();
+    }
   };
   //setup
 
@@ -66,17 +73,20 @@ $(document).ready(function () {
     if (sceneState.prevObject) {
       scene.remove(sceneState.prevObject);
       sceneState.prevObject.dispose();
-      scene.add(sceneState.curObject);
       //to sync new model's texture with the current texture setting
       // updateTexture();
       //to sync new model's transform with the current transform setting
       // updateMesh();
     }
+    scene.add(sceneState.curObject);
   }
 
   function updateRenderMode(mode) {
     let intMode;
     switch (mode) {
+      case "Normal":
+        intMode = 3;
+        break;
       case "Solid":
         intMode = 0;
         break;
