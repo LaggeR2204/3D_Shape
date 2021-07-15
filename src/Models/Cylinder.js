@@ -1,14 +1,8 @@
 import { CylinderGeometry } from "three";
 import Shape from "./shape.js";
 export default class Cylinder extends Shape {
-  constructor(
-    radiusBottom,
-    radiusTop,
-    height,
-    color = 0xffffff,
-    renderMode = 0
-  ) {
-    super(color, renderMode);
+  constructor(radiusBottom, radiusTop, height, color = 0xffffff) {
+    super(color);
     this.data = {
       radiusTop: radiusTop,
       radiusBottom: radiusBottom,
@@ -35,8 +29,8 @@ export default class Cylinder extends Shape {
     );
   }
 
-  setMesh(texture = undefined) {
-    super.createMesh(this.getGeometry(), texture);
+  setMesh(renderMode = 3, texture = null) {
+    super.createMesh(this.getGeometry(), renderMode, texture);
   }
 
   createGUI(gui, callback) {

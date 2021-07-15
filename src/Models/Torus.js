@@ -1,8 +1,8 @@
 import { TorusGeometry } from "three";
 import Shape from "./shape.js";
 export default class Torus extends Shape {
-  constructor(radius, tube, color = 0xffffff, renderMode = 0) {
-    super(color, renderMode);
+  constructor(radius, tube, color = 0xffffff) {
+    super(color);
     this.data = {
       radius: radius,
       tube: tube,
@@ -23,8 +23,8 @@ export default class Torus extends Shape {
     );
   }
 
-  setMesh(texture = undefined) {
-    super.createMesh(this.getGeometry(), texture);
+  setMesh(renderMode = 3, texture = null) {
+    super.createMesh(this.getGeometry(), renderMode, texture);
   }
 
   createGUI(gui, callback) {

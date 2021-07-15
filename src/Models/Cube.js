@@ -1,8 +1,8 @@
 import { BoxGeometry } from "three";
 import Shape from "./shape.js";
 export default class Cube extends Shape {
-  constructor(height, width, depth, color = 0xffffff, renderMode = 3) {
-    super(color, renderMode);
+  constructor(height, width, depth, color = 0xffffff) {
+    super(color);
     this.data = {
       width: width,
       height: height,
@@ -11,7 +11,7 @@ export default class Cube extends Shape {
       heightSegments: 1,
       depthSegments: 1,
     };
-    this.setMesh();
+    // this.setMesh();
   }
 
   getGeometry() {
@@ -25,8 +25,8 @@ export default class Cube extends Shape {
     );
   }
 
-  setMesh(texture = undefined) {
-    super.createMesh(this.getGeometry(), texture);
+  setMesh(renderMode = 3, texture = null) {
+    super.createMesh(this.getGeometry(), renderMode, texture);
   }
 
   createGUI(gui, callback) {

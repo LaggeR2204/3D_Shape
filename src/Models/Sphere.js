@@ -1,8 +1,8 @@
 import { SphereGeometry } from "three";
 import Shape from "./shape.js";
 export default class Sphere extends Shape {
-  constructor(radius, color = 0xffffff, renderMode = 0) {
-    super(color, renderMode);
+  constructor(radius, color = 0xffffff) {
+    super(color);
     this.data = {
       radius: radius,
       widthSegments: 8,
@@ -27,8 +27,8 @@ export default class Sphere extends Shape {
     );
   }
 
-  setMesh(texture = undefined) {
-    super.createMesh(this.getGeometry(), texture);
+  setMesh(renderMode = 3, texture = null) {
+    super.createMesh(this.getGeometry(), renderMode, texture);
   }
 
   createGUI(gui, callback) {

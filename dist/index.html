@@ -54,8 +54,19 @@
                     </button>
                     <div class="dropdown-content">
                         <button class="texture" href="#">Texture 1</button>
-                        <button class="texture" href="#">Texture 2</button>
-                        <button class="texture" href="#">Texture 3</button>
+                        <button class="texture" href="#">Brick</button>
+                        <button class="texture" href="#">Choose...</button>
+                        <button class="texture" href="#">Clear Texture</button>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <button class="dropbtn">Transformations
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <button class="transform" href="#">Scale</button>
+                        <button class="transform" href="#">Rotate</button>
+                        <button class="transform" href="#">Move</button>
                     </div>
                 </li>
                 <li class="dropdown">
@@ -72,7 +83,10 @@
 
         </nav>
         <div id="canvas-container">
+            <button id="camera" class="btnOption"><i class="fas fa-video"></i></button>
+            <button id="clear" class="btnOption"><i class="fas fa-trash-alt"></i></button>
             <div id="gui"></div>
+            <input type="file" hidden id="tex-choose" />
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
