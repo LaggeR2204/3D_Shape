@@ -101,28 +101,44 @@ body {
 }
 
 #clear {
-  top: 8rem;
+  top: 16rem;
   left: 2rem;
+}
+
+#transform {
+  position: absolute;
+  top: 6rem;
+  left: 2rem;
+  border-radius: 0.5rem;
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 
 
 .btnEnable {
-  -webkit-box-shadow: 0px 0px 9px 1px rgba(255, 255, 255, 0.63); 
-  box-shadow: 0px 0px 9px 1px rgba(255, 255, 255, 0.63);
+  /* -webkit-box-shadow: 0px 0px 9px 1px rgba(255, 255, 255, 0.63); 
+  box-shadow: 0px 0px 9px 1px rgba(255, 255, 255, 0.63); */
   background-color: var(--color-primary);
+}
+
+.btnControl {
+  cursor: pointer;
+  width: 3rem;
+  height: 3rem;
+  border: none;
 }
 
 .btnOption {
   position: absolute;
   z-index: 100;
-  width: 3rem;
-  height: 3rem;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
+  border-radius: 0.5rem; 
 }
 
-.btnOption:hover {
+.btnControl:hover {
   background-color: hsl(230deg, 100%, 80%);
 }
+

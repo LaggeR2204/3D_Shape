@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { GUI } from "GUI";
 import SceneState from "./State/SceneState.js";
 import { OrbitControls } from "OrbitControls";
-import { getTexture } from "./Textures/Texture";
+import { TransformControls } from "TransformControls";
 $(document).ready(function () {
   THREE.Object3D.prototype.dispose = function () {
     if (this.children.length === 0) {
@@ -59,6 +59,8 @@ $(document).ready(function () {
   scene.add(lights[1]);
   scene.add(lights[2]);
 
+  //CONTROL
+
   //orbit control
   const orbit = new OrbitControls(camera, renderer.domElement);
   orbit.enableZoom = true;
@@ -78,6 +80,41 @@ $(document).ready(function () {
     }
   });
 
+  //transform control
+
+  const controls = new TransformControls(camera, renderer.domElement);
+  scene.add(controls);
+
+  const switchGr = {
+    controls: [$("#translate"), $("#scale"), $("#rotate")],
+    notify: function () {
+      if (sceneState.transformMode) {
+        controls.setMode(sceneState.transformMode);
+        if (!controls.object) controls.attach(sceneState.curObject);
+      } else {
+        if (controls.object) controls.detach();
+      }
+      this.controls.forEach((btn) => {
+        if (btn.attr("id") === sceneState.transformMode) {
+          btn.addClass("btnEnable");
+        } else btn.removeClass("btnEnable");
+      });
+    },
+  };
+
+  $("#translate").click(function () {
+    sceneState.updateTransformMode("translate");
+    switchGr.notify("translate");
+  });
+  $("#scale").click(function () {
+    sceneState.updateTransformMode("scale");
+    switchGr.notify("scale");
+  });
+  $("#rotate").click(function () {
+    sceneState.updateTransformMode("rotate");
+    switchGr.notify("rotate");
+  });
+
   //end setup
 
   function animate() {
@@ -87,12 +124,7 @@ $(document).ready(function () {
   animate();
 
   function updateShape(shape) {
-    if (sceneState.curObject) {
-      scene.remove(sceneState.curObject);
-      sceneState.curObject.dispose();
-    }
-    sceneState.updateShape(shape, gui);
-    scene.add(sceneState.curObject);
+    sceneState.updateShape(gui, { shape: shape }, onObjectChange);
   }
 
   function updateRenderMode(mode) {
@@ -113,27 +145,37 @@ $(document).ready(function () {
       default:
         intMode = 0;
     }
-    const res = sceneState.updateRenderMode(intMode);
-    if (res.result) {
-      scene.remove(res.obj);
-      res.obj.dispose();
-      scene.add(sceneState.curObject);
-    }
+    sceneState.updateRenderMode(intMode, onObjectChange);
   }
 
   function updateTexture(option) {
     sceneState.updateTexture(option);
   }
 
+  const onObjectChange = function (newObj, oldObj = null) {
+    if (oldObj) {
+      if (controls.object) controls.detach();
+      scene.remove(oldObj);
+      oldObj.dispose();
+    }
+    if (sceneState.transformMode) {
+      controls.attach(newObj);
+      controls.setMode(sceneState.transformMode);
+    }
+    scene.add(newObj);
+  };
+
   //event
 
   $("#clear").click(function () {
-    // scene.remove(sceneState.curObject);
+    if (sceneState.curGUIFolder) gui.removeFolder(sceneState.curGUIFolder);
+    scene.remove(sceneState.curObject);
     camera.position.x = 0;
     camera.position.y = 0;
     camera.position.z = 10;
     camera.lookAt(0, 0, -1);
     sceneState.clear();
+    switchGr.notify();
   });
 
   $(".model").click(function () {
@@ -149,8 +191,6 @@ $(document).ready(function () {
       $("#tex-choose").trigger("click");
     } else updateTexture($(this).text());
   });
-
-  $(".transform").click(function () {});
 
   $("#tex-choose").change(function (event) {
     // console.log(event);

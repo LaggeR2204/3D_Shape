@@ -18,16 +18,14 @@ export default class SceneState {
     this.curGUIFolder = null;
     this.curRenderMode = 3;
 
-    this.onDrag = false;
-    this.speed = 0;
-    this.accelaretion = 0.001;
+    this.transformMode = "";
   }
 
-  updateShape(shape, gui, renderMode = 3) {
+  updateShape(gui, option, cb) {
     this.curGUIFolder && gui.removeFolder(this.curGUIFolder);
     this.curGUIFolder = null;
-    renderMode = parseInt(renderMode);
-    switch (shape) {
+    // this.curRenderMode = parseInt(option.renderMode || 3);
+    switch (option.shape) {
       case "Cube":
         this.curShape = new Cube(5, 5, 5, 0x156289);
         break;
@@ -52,6 +50,7 @@ export default class SceneState {
       default:
     }
     this.curShape.setMesh(this.curRenderMode, this.curTexture);
+    const oldObj = this.curObject;
     this.curObject = this.curShape.getMesh();
     this.curGUIFolder = this.curShape.createGUI(gui, {
       onGeoChange: () => {
@@ -79,6 +78,7 @@ export default class SceneState {
     });
     gui.show();
     this.curGUIFolder.open();
+    cb(this.curObject, oldObj);
   }
 
   updateTexture(option, file = null) {
@@ -111,13 +111,13 @@ export default class SceneState {
     this.curObject.material.needsUpdate = true;
   }
 
-  updateRenderMode(renderMode = 0) {
+  updateRenderMode(renderMode = 0, cb = null) {
     this.curRenderMode = renderMode;
     if (!this.curObject) return { result: false };
     const obj = this.curObject;
     this.curShape.setMesh(this.curRenderMode, this.curTexture);
     this.curObject = this.curShape.getMesh();
-    return { result: true, obj };
+    cb(this.curObject, obj);
   }
 
   clear() {
@@ -127,5 +127,12 @@ export default class SceneState {
     this.curTextureOption = "";
     this.curGUIFolder = null;
     this.curRenderMode = 3;
+    this.transformMode = "";
+  }
+
+  updateTransformMode(mode) {
+    if (!this.curObject) return;
+    if (this.transformMode === mode) this.transformMode = "";
+    else this.transformMode = mode;
   }
 }

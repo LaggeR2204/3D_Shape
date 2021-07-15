@@ -60,16 +60,6 @@
                     </div>
                 </li>
                 <li class="dropdown">
-                    <button class="dropbtn">Transformations
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <button class="transform" href="#">Scale</button>
-                        <button class="transform" href="#">Rotate</button>
-                        <button class="transform" href="#">Move</button>
-                    </div>
-                </li>
-                <li class="dropdown">
                     <button class="dropbtn">Animations
                         <i class="fa fa-caret-down"></i>
                     </button>
@@ -83,8 +73,13 @@
 
         </nav>
         <div id="canvas-container">
-            <button id="camera" class="btnOption"><i class="fas fa-video"></i></button>
-            <button id="clear" class="btnOption"><i class="fas fa-trash-alt"></i></button>
+            <button id="camera" class="btnControl btnOption"><i class="fas fa-video"></i></button>
+            <div id="transform">
+                <button id="translate" class="btnControl"><i class="fas fa-arrows-alt"></i></button>
+                <button id="scale" class="btnControl"><i class="fas fa-expand-alt"></i></button>
+                <button id="rotate" class="btnControl"><i class="fas fa-sync"></i></button>
+            </div>
+            <button id="clear" class="btnControl btnOption"><i class="fas fa-trash-alt"></i></button>
             <div id="gui"></div>
             <input type="file" hidden id="tex-choose" />
         </div>
