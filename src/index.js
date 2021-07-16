@@ -2,8 +2,9 @@ import * as THREE from "three";
 import { GUI } from "GUI";
 import SceneState from "./State/SceneState.js";
 import { OrbitControls } from "OrbitControls";
-import { LightOption } from "./LightOption.js";
+import { LightOption } from "./Light/LightOption.js";
 import { TransformControls } from "TransformControls";
+import { AnimationOption } from "./Animations/AnimationOption.js";
 $(document).ready(function () {
   THREE.Object3D.prototype.dispose = function () {
     if (this.children.length === 0) {
@@ -51,7 +52,7 @@ $(document).ready(function () {
   let mat = new THREE.MeshLambertMaterial({ color: 0x666666 });
   let planeMesh = new THREE.Mesh(plane, mat);
   planeMesh.rotation.x = -Math.PI / 2;
-  planeMesh.position.y = -3;
+  planeMesh.position.y = -4;
   planeMesh.castShadow = false;
   planeMesh.receiveShadow = true;
   scene.add(planeMesh);
@@ -93,6 +94,9 @@ $(document).ready(function () {
 
   scene.add(lights[1]);
   updateLighting();
+
+  //ANIMATION
+  var animationOption = new AnimationOption();
 
   //CONTROL
 
@@ -151,8 +155,40 @@ $(document).ready(function () {
   });
 
   //end setup
+  function updateMeshAnimation() {
+    sceneState.curObject.rotation.x =
+      (animationOption.rotationX / 180) * Math.PI;
+    sceneState.curObject.rotation.y =
+      (animationOption.rotationY / 180) * Math.PI;
+    sceneState.curObject.rotation.z =
+      (animationOption.rotationZ / 180) * Math.PI;
+    sceneState.curObject.position.x = animationOption.positionX;
+    sceneState.curObject.position.y = animationOption.positionY;
+    sceneState.curObject.position.z = animationOption.positionZ;
+  }
 
   function animate() {
+    if (animationOption.isAnimateRotating) {
+      animationOption.rotationX += 2;
+      if (animationOption.rotationX < -180) animationOption.rotationX += 360;
+      else if (animationOption.rotationX > 180)
+        animationOption.rotationX -= 360;
+      animationOption.rotationY += 2;
+      if (animationOption.rotationY < -180) animationOption.rotationY += 360;
+      else if (animationOption.rotationY > 180)
+        animationOption.rotationY -= 360;
+      animationOption.rotationZ += 2;
+      if (animationOption.rotationZ < -180) animationOption.rotationZ += 360;
+      else if (animationOption.rotationZ > 180)
+        animationOption.rotationZ -= 360;
+      updateMeshAnimation();
+    }
+    if (animationOption.isAnimateBouncing) {
+      sceneState.speed -= sceneState.accelaretion;
+      animationOption.positionY += sceneState.speed;
+      if (animationOption.positionY < -2) sceneState.speed = -sceneState.speed;
+      updateMeshAnimation();
+    }
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
   }
@@ -185,6 +221,34 @@ $(document).ready(function () {
 
   function updateTexture(option) {
     sceneState.updateTexture(option);
+  }
+
+  function updateAnimation(option) {
+    switch (option) {
+      case "Auto Rotate":
+        animationOption.isAnimateRotating = !animationOption.isAnimateRotating;
+        break;
+      case "Bouncy":
+        animationOption.isAnimateBouncing = !animationOption.isAnimateBouncing;
+        break;
+      case "Stop":
+        animationOption.isAnimateRotating = false;
+        animationOption.isAnimateBouncing = false;
+        break;
+      case "Clear":
+        animationOption.rotationX = 0;
+        animationOption.rotationY = 0;
+        animationOption.rotationZ = 0;
+        animationOption.positionX = 0;
+        animationOption.positionY = 0;
+        animationOption.positionZ = 0;
+        updateMeshAnimation();
+        animationOption.isAnimateRotating = false;
+        animationOption.isAnimateBouncing = false;
+        break;
+      default:
+        break;
+    }
   }
 
   //update point light
@@ -276,6 +340,10 @@ $(document).ready(function () {
     if ($(this).text() === "Choose...") {
       $("#tex-choose").trigger("click");
     } else updateTexture($(this).text());
+  });
+
+  $(".animation").click(function () {
+    updateAnimation($(this).text());
   });
 
   $("#tex-choose").change(function (event) {

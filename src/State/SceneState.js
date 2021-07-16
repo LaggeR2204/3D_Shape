@@ -17,8 +17,9 @@ export default class SceneState {
     this.curTextureOption = "";
     this.curGUIFolder = null;
     this.curRenderMode = 3;
-
     this.transformMode = "";
+    this.speed = 0;
+    this.accelaretion = 0.001;
   }
 
   updateShape(gui, option, cb) {
