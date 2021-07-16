@@ -5,6 +5,8 @@ import { OrbitControls } from "OrbitControls";
 import { LightOption } from "./Light/LightOption.js";
 import { TransformControls } from "TransformControls";
 import { AnimationOption } from "./Animations/AnimationOption.js";
+import { FogOption } from "./Fog/FogOption.js";
+
 $(document).ready(function () {
   THREE.Object3D.prototype.dispose = function () {
     if (this.children.length === 0) {
@@ -94,6 +96,20 @@ $(document).ready(function () {
 
   scene.add(lights[1]);
   updateLighting();
+
+  //FOG
+  var fogOption = new FogOption();
+  console.log(fogOption.color);
+  let fogFolder = gui.addFolder("Fog");
+  fogFolder.open();
+
+  fogFolder
+    .add(fogOption, "enableFog")
+    .name("Enable Fog")
+    .onChange(toggleEnableFog);
+  var fogNearItem = null;
+  var fogFarItem = null;
+  var fogColorOption = null;
 
   //ANIMATION
   var animationOption = new AnimationOption();
@@ -276,6 +292,40 @@ $(document).ready(function () {
       console.log(lightOption.shadow);
       lights[0].castShadow = false;
     }
+  }
+
+  function toggleEnableFog() {
+    if (fogOption.enableFog) {
+      fogColorOption = fogFolder
+        .addColor(fogOption, "color")
+        .onChange(updateFogColor);
+      updateFogColor();
+    } else {
+      fogFolder.remove(fogNearItem);
+      fogNearItem = null;
+      fogFolder.remove(fogFarItem);
+      fogFarItem = null;
+      fogFolder.remove(fogColorOption);
+      scene.background = new THREE.Color(0x000000);
+      scene.fog = null;
+    }
+  }
+
+  function updateFogColor() {
+    if (fogNearItem != null && fogFarItem != null) {
+      fogFolder.remove(fogNearItem);
+      fogFolder.remove(fogFarItem);
+    }
+    scene.background = new THREE.Color(fogOption.color);
+    scene.fog = new THREE.Fog(fogOption.color, fogOption.near, fogOption.far);
+    fogNearItem = fogFolder
+      .add(scene.fog, "near", fogOption.near, fogOption.far)
+      .name("Near")
+      .listen();
+    fogFarItem = fogFolder
+      .add(scene.fog, "far", fogOption.near, fogOption.far)
+      .name("Far")
+      .listen();
   }
 
   window.onmousemove = function (event) {
