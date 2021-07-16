@@ -10,6 +10,7 @@ import {
   MeshPhongMaterial,
   Group,
   DoubleSide,
+  MeshLambertMaterial,
 } from "three";
 export default class Shape {
   // position = {
@@ -40,9 +41,9 @@ export default class Shape {
     if (texture) {
       const op = {};
       op[texture.option] = texture.tex;
-      material = new MeshBasicMaterial(op);
+      material = new MeshLambertMaterial(op);
     } else {
-      material = new MeshBasicMaterial({
+      material = new MeshLambertMaterial({
         color: this.color,
       });
     }
@@ -73,7 +74,7 @@ export default class Shape {
       transparent: true,
       opacity: 0.5,
     });
-    const meshMaterial = new MeshPhongMaterial({
+    const meshMaterial = new MeshLambertMaterial({
       color: this.color,
       emissive: 0x072534,
       side: DoubleSide,
@@ -82,7 +83,9 @@ export default class Shape {
 
     const group = new Group();
     group.add(new LineSegments(geometry, lineMaterial));
-    group.add(new Mesh(geometry, meshMaterial));
+    const mesh = new Mesh(geometry, meshMaterial);
+    mesh.castShadow = true;
+    group.add(mesh);
     return group;
   }
 
