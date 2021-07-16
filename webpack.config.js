@@ -17,6 +17,15 @@ module.exports = {
         test: /\.css$/i,
         use: ["style-loader", "css-loader"],
       },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        // type: "asset/resource",
+        use: [
+          {
+            loader: "file-loader",
+          },
+        ],
+      },
     ],
   },
   resolve: {
@@ -25,6 +34,8 @@ module.exports = {
         "/node_modules/three/examples/jsm/controls/OrbitControls.js",
 
       GUI$: "/node_modules/three/examples/jsm/libs/dat.gui.module.js",
+      TransformControls$:
+        "/node_modules/three/examples/jsm/controls/TransformControls.js",
     },
   },
 };

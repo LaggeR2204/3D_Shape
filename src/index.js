@@ -3,12 +3,15 @@ import { GUI } from "GUI";
 import SceneState from "./State/SceneState.js";
 import { OrbitControls } from "OrbitControls";
 import { LightOption } from "./LightOption.js";
+import { TransformControls } from "TransformControls";
 $(document).ready(function () {
   THREE.Object3D.prototype.dispose = function () {
     if (this.children.length === 0) {
+      console.log("dispose unnormal shape");
       this.geometry.dispose();
       this.material.dispose();
     } else {
+      console.log("dispose normal shape");
       this.children[0].geometry.dispose();
       this.children[0].material.dispose();
       this.children[1].geometry.dispose();
@@ -24,10 +27,10 @@ $(document).ready(function () {
     75,
     $("#canvas-container").innerWidth() / $("#canvas-container").innerHeight(),
     0.1,
-    1000
+    50
   );
 
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap; // default THREE.PCFShadowMap
 
@@ -91,9 +94,61 @@ $(document).ready(function () {
   scene.add(lights[1]);
   updateLighting();
 
+  //CONTROL
+
   //orbit control
   const orbit = new OrbitControls(camera, renderer.domElement);
   orbit.enableZoom = true;
+  orbit.enablePan = true;
+  orbit.enableRotate = true;
+  orbit.enabled = false;
+  let camMouseEnable = false;
+
+  $("#camera").click(function () {
+    camMouseEnable = !camMouseEnable;
+    if (camMouseEnable) {
+      orbit.enabled = true;
+      $(this).addClass("btnEnable");
+    } else {
+      orbit.enabled = false;
+      $(this).removeClass("btnEnable");
+    }
+  });
+
+  //transform control
+
+  const controls = new TransformControls(camera, renderer.domElement);
+  scene.add(controls);
+
+  const switchGr = {
+    controls: [$("#translate"), $("#scale"), $("#rotate")],
+    notify: function () {
+      if (sceneState.transformMode) {
+        controls.setMode(sceneState.transformMode);
+        if (!controls.object) controls.attach(sceneState.curObject);
+      } else {
+        if (controls.object) controls.detach();
+      }
+      this.controls.forEach((btn) => {
+        if (btn.attr("id") === sceneState.transformMode) {
+          btn.addClass("btnEnable");
+        } else btn.removeClass("btnEnable");
+      });
+    },
+  };
+
+  $("#translate").click(function () {
+    sceneState.updateTransformMode("translate");
+    switchGr.notify("translate");
+  });
+  $("#scale").click(function () {
+    sceneState.updateTransformMode("scale");
+    switchGr.notify("scale");
+  });
+  $("#rotate").click(function () {
+    sceneState.updateTransformMode("rotate");
+    switchGr.notify("rotate");
+  });
 
   //end setup
 
@@ -104,12 +159,7 @@ $(document).ready(function () {
   animate();
 
   function updateShape(shape) {
-    sceneState.updateShape(shape, gui);
-    if (sceneState.prevObject) {
-      scene.remove(sceneState.prevObject);
-      sceneState.prevObject.dispose();
-    }
-    scene.add(sceneState.curObject);
+    sceneState.updateShape(gui, { shape: shape }, onObjectChange);
   }
 
   function updateRenderMode(mode) {
@@ -130,13 +180,11 @@ $(document).ready(function () {
       default:
         intMode = 0;
     }
-    sceneState.updateRenderMode(intMode);
+    sceneState.updateRenderMode(intMode, onObjectChange);
+  }
 
-    if (sceneState.prevObject) {
-      scene.remove(sceneState.prevObject);
-      scene.add(sceneState.curObject);
-      // updateMesh();
-    }
+  function updateTexture(option) {
+    sceneState.updateTexture(option);
   }
 
   //update point light
@@ -187,6 +235,31 @@ $(document).ready(function () {
       scene.remove(pointLightHelper);
     }
   };
+  const onObjectChange = function (newObj, oldObj = null) {
+    if (oldObj) {
+      if (controls.object) controls.detach();
+      scene.remove(oldObj);
+      oldObj.dispose();
+    }
+    if (sceneState.transformMode) {
+      controls.attach(newObj);
+      controls.setMode(sceneState.transformMode);
+    }
+    scene.add(newObj);
+  };
+
+  //event
+
+  $("#clear").click(function () {
+    if (sceneState.curGUIFolder) gui.removeFolder(sceneState.curGUIFolder);
+    scene.remove(sceneState.curObject);
+    camera.position.x = 0;
+    camera.position.y = 0;
+    camera.position.z = 10;
+    camera.lookAt(0, 0, -1);
+    sceneState.clear();
+    switchGr.notify();
+  });
 
   $(".model").click(function () {
     updateShape($(this).text());
@@ -194,5 +267,20 @@ $(document).ready(function () {
 
   $(".mode").click(function () {
     updateRenderMode($(this).text());
+  });
+
+  $(".texture").click(function () {
+    if ($(this).text() === "Choose...") {
+      $("#tex-choose").trigger("click");
+    } else updateTexture($(this).text());
+  });
+
+  $("#tex-choose").change(function (event) {
+    // console.log(event);
+    const file = $(this)[0].files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      sceneState.updateTexture("custom", url);
+    }
   });
 });

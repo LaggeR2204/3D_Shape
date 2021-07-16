@@ -1,7 +1,7 @@
 import {
   LineSegments,
-  MeshLambertMaterial,
   MeshBasicMaterial,
+  // MeshBasicMaterial,
   Mesh,
   EdgesGeometry,
   LineBasicMaterial,
@@ -30,19 +30,23 @@ export default class Shape {
   constructor(color, renderMode) {
     this.color = color;
     //0 - Solid, 1 - Wireframe, 2 - Point, 3- normal
-    this.renderMode = renderMode;
-    this.texture = null;
+    // this.renderMode = renderMode;
+    // this.texture = null;
     this.mesh = null;
   }
 
   getSolidMesh(geo, texture = undefined) {
     let material;
     if (texture) {
-      material = new MeshLambertMaterial({ map: texture });
-    } else
+      const op = {};
+      op[texture.option] = texture.tex;
+      material = new MeshBasicMaterial(op);
+    } else {
       material = new MeshBasicMaterial({
         color: this.color,
       });
+    }
+
     const obj = new Mesh(geo, material);
     return obj;
   }
@@ -82,8 +86,8 @@ export default class Shape {
     return group;
   }
 
-  createMesh(geo, texture = null) {
-    switch (this.renderMode) {
+  createMesh(geo, renderMode = 3, texture = null) {
+    switch (renderMode) {
       case 0:
         this.mesh = this.getSolidMesh(geo, texture);
         break;

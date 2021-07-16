@@ -5,49 +5,52 @@ import Sphere from "../Models/Sphere.js";
 import Icosahedron from "../Models/Icosahedron.js";
 import Torus from "../Models/Torus.js";
 import Teapot from "../Models/Teapot.js";
-
+import { getTexture } from "../Textures/Texture.js";
+import { Color, Mesh } from "three";
 export default class SceneState {
   constructor() {
-    this.prevObject = null;
-    this.curShape = new Cube(1, 1, 1, 0xff0000);
-    this.curObject = this.curShape.getMesh();
+    // this.curShape = new Cube(1, 1, 1, 0xff0000);
+    // this.curObject = this.curShape.getMesh();
+    this.curShape = null;
+    this.curObject = null;
     this.curTexture = null;
+    this.curTextureOption = "";
     this.curGUIFolder = null;
+    this.curRenderMode = 3;
 
-    this.onDrag = false;
-    this.speed = 0;
-    this.accelaretion = 0.001;
+    this.transformMode = "";
   }
 
-  updateShape(shape, gui, renderMode = 3) {
-    this.prevObject = this.curObject;
+  updateShape(gui, option, cb) {
     this.curGUIFolder && gui.removeFolder(this.curGUIFolder);
     this.curGUIFolder = null;
-    renderMode = parseInt(renderMode);
-    switch (shape) {
+    // this.curRenderMode = parseInt(option.renderMode || 3);
+    switch (option.shape) {
       case "Cube":
-        this.curShape = new Cube(3, 3, 3, 0x38284b, renderMode);
+        this.curShape = new Cube(3, 3, 3, 0x38284b);
         break;
       case "Cone":
-        this.curShape = new Cone(3, 3, 0x38284b, renderMode);
+        this.curShape = new Cone(3, 3, 0x156289);
         break;
       case "Cylinder":
-        this.curShape = new Cylinder(2, 2, 3, 0x38284b, renderMode);
+        this.curShape = new Cylinder(2, 2, 3, 0x38284b);
         break;
       case "Sphere":
-        this.curShape = new Sphere(2, 0x38284b, renderMode);
+        this.curShape = new Sphere(2, 0x38284b);
         break;
       case "Icosahedron":
-        this.curShape = new Icosahedron(2, 0x38284b, renderMode);
+        this.curShape = new Icosahedron(2, 0x38284b);
         break;
       case "Torus":
-        this.curShape = new Torus(2, 0.5, 0x38284b, renderMode);
+        this.curShape = new Torus(2, 0.5, 0x38284b);
         break;
       case "Teapot":
-        this.curShape = new Teapot(2, 0x38284b, renderMode);
+        this.curShape = new Teapot(2, 0x156289);
         break;
       default:
     }
+    this.curShape.setMesh(this.curRenderMode, this.curTexture);
+    const oldObj = this.curObject;
     this.curObject = this.curShape.getMesh();
     this.curGUIFolder = this.curShape.createGUI(gui, {
       onGeoChange: () => {
@@ -75,18 +78,61 @@ export default class SceneState {
     });
     gui.show();
     this.curGUIFolder.open();
+    cb(this.curObject, oldObj);
   }
 
-  updateTexture() {
-    this.prevObject = this.curObject;
-    this.curShape.setMesh(this.curTexture);
-    this.curObject = this.curShape.getMesh();
+  updateTexture(option, file = null) {
+    if (this.curTextureOption) {
+      this.curTexture.tex.dispose();
+    }
+    if (this.curTextureOption === option || !this.curObject) {
+      return;
+    }
+
+    this.curTextureOption = option;
+    this.curTexture = getTexture(option, file);
+
+    if (this.curTexture) {
+      if (this.curObject instanceof Mesh) {
+        this.curObject.material.envMap = null;
+        this.curObject.material.map = null;
+        this.curObject.material[this.curTexture.option] = this.curTexture.tex;
+        this.curObject.material.color = new Color(0xffffff);
+      }
+    } else {
+      if (this.curObject instanceof Mesh) {
+        this.curObject.material.color = new Color(0x156289);
+        this.curObject.material.envMap = null;
+        this.curObject.material.map = null;
+      }
+      this.curTextureOption = "";
+      this.curTexture = null;
+    }
+    this.curObject.material.needsUpdate = true;
   }
 
-  updateRenderMode(renderMode = 0) {
-    this.prevObject = this.curObject;
-    this.curShape.renderMode = parseInt(renderMode);
-    this.curShape.setMesh(this.curTexture);
+  updateRenderMode(renderMode = 0, cb = null) {
+    this.curRenderMode = renderMode;
+    if (!this.curObject) return { result: false };
+    const obj = this.curObject;
+    this.curShape.setMesh(this.curRenderMode, this.curTexture);
     this.curObject = this.curShape.getMesh();
+    cb(this.curObject, obj);
+  }
+
+  clear() {
+    this.curShape = null;
+    this.curObject = null;
+    this.curTexture = null;
+    this.curTextureOption = "";
+    this.curGUIFolder = null;
+    this.curRenderMode = 3;
+    this.transformMode = "";
+  }
+
+  updateTransformMode(mode) {
+    if (!this.curObject) return;
+    if (this.transformMode === mode) this.transformMode = "";
+    else this.transformMode = mode;
   }
 }

@@ -1,8 +1,8 @@
 import { ConeGeometry } from "three";
 import Shape from "./shape.js";
 export default class Cone extends Shape {
-  constructor(radius, height, color = 0xffffff, renderMode = 0) {
-    super(color, renderMode);
+  constructor(radius, height, color = 0xffffff) {
+    super(color);
     this.data = {
       radius: radius,
       height: height,
@@ -12,7 +12,7 @@ export default class Cone extends Shape {
       thetaStart: 0,
       thetaLength: Math.PI * 2,
     };
-    this.setMesh();
+    // this.setMesh();
   }
 
   getGeometry() {
@@ -27,8 +27,8 @@ export default class Cone extends Shape {
     );
   }
 
-  setMesh(texture = undefined) {
-    super.createMesh(this.getGeometry(), texture);
+  setMesh(renderMode = 3, texture = null) {
+    super.createMesh(this.getGeometry(), renderMode, texture);
   }
 
   createGUI(gui, callback) {
