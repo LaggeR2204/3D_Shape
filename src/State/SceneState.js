@@ -26,22 +26,22 @@ export default class SceneState {
     renderMode = parseInt(renderMode);
     switch (shape) {
       case "Cube":
-        this.curShape = new Cube(5, 5, 5, 0x38284b, renderMode);
+        this.curShape = new Cube(3, 3, 3, 0x38284b, renderMode);
         break;
       case "Cone":
         this.curShape = new Cone(3, 3, 0x38284b, renderMode);
         break;
       case "Cylinder":
-        this.curShape = new Cylinder(3, 3, 3, 0x38284b, renderMode);
+        this.curShape = new Cylinder(2, 2, 3, 0x38284b, renderMode);
         break;
       case "Sphere":
-        this.curShape = new Sphere(3, 0x38284b, renderMode);
+        this.curShape = new Sphere(2, 0x38284b, renderMode);
         break;
       case "Icosahedron":
-        this.curShape = new Icosahedron(3, 0x38284b, renderMode);
+        this.curShape = new Icosahedron(2, 0x38284b, renderMode);
         break;
       case "Torus":
-        this.curShape = new Torus(5, 1.5, 0x38284b, renderMode);
+        this.curShape = new Torus(2, 0.5, 0x38284b, renderMode);
         break;
       case "Teapot":
         this.curShape = new Teapot(2, 0x38284b, renderMode);
