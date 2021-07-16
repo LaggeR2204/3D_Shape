@@ -45,7 +45,7 @@ export const getTexture = function (option, file = null) {
         tex: tex1(),
         option: "envMap",
       };
-    case "Brick":
+    case "Texture 2":
       return {
         tex: brickTex(),
         option: "map",

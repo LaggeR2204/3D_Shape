@@ -1,8 +1,8 @@
 import * as THREE from "three";
 import { GUI } from "GUI";
 import SceneState from "./State/SceneState.js";
-import { OrbitControls } from "OrbitControls";
-import { TransformControls } from "TransformControls";
+import { OrbitControls } from "Controls/OrbitControls";
+import { TransformControls } from "Controls/TransformControls";
 $(document).ready(function () {
   THREE.Object3D.prototype.dispose = function () {
     if (this.children.length === 0) {
@@ -175,6 +175,7 @@ $(document).ready(function () {
     camera.position.z = 10;
     camera.lookAt(0, 0, -1);
     sceneState.clear();
+    gui.hide();
     switchGr.notify();
   });
 
@@ -189,7 +190,7 @@ $(document).ready(function () {
   $(".texture").click(function () {
     if ($(this).text() === "Choose...") {
       $("#tex-choose").trigger("click");
-    } else updateTexture($(this).text());
+    } else sceneState.updateTexture($(this).text(), null, onObjectChange);
   });
 
   $("#tex-choose").change(function (event) {
@@ -197,7 +198,7 @@ $(document).ready(function () {
     const file = $(this)[0].files[0];
     if (file) {
       const url = URL.createObjectURL(file);
-      sceneState.updateTexture("custom", url);
+      sceneState.updateTexture("custom", url, onObjectChange);
     }
   });
 });

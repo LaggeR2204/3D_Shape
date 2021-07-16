@@ -1,4 +1,4 @@
-import { TeapotGeometry } from "../../node_modules/three/examples/jsm/geometries/TeapotGeometry.js";
+import { TeapotGeometry } from "CustomGeometry/TeapotGeometry.js";
 
 import Shape from "./shape.js";
 export default class Teapot extends Shape {

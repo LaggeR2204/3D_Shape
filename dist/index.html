@@ -21,10 +21,16 @@
                         <button class="model" href="#">Cube</button>
                         <button class="model" href="#">Cone</button>
                         <button class="model" href="#">Cylinder</button>
-                        <button class="model" href="#">Icosahedron</button>
                         <button class="model" href="#">Sphere</button>
-                        <button class="model" href="#">Teapot</button>
+                        <button class="model" href="#">Tetrahedron</button>
+                        <button class="model" href="#">Octahedron</button>
+                        <button class="model" href="#">Dodecahedron</button>
+                        <button class="model" href="#">Icosahedron</button>
+                        <button class="model" href="#">Lathe</button>
                         <button class="model" href="#">Torus</button>
+                        <button class="model" href="#">Tube</button>
+                        <button class="model" href="#">Extrude</button>
+                        <button class="model" href="#">Teapot</button>
                     </div>
                 </li>
                 <li class="dropdown">
@@ -54,7 +60,7 @@
                     </button>
                     <div class="dropdown-content">
                         <button class="texture" href="#">Texture 1</button>
-                        <button class="texture" href="#">Brick</button>
+                        <button class="texture" href="#">Texture 2</button>
                         <button class="texture" href="#">Choose...</button>
                         <button class="texture" href="#">Clear Texture</button>
                     </div>
@@ -73,13 +79,17 @@
 
         </nav>
         <div id="canvas-container">
-            <button id="camera" class="btnControl btnOption"><i class="fas fa-video"></i></button>
-            <div id="transform">
-                <button id="translate" class="btnControl"><i class="fas fa-arrows-alt"></i></button>
-                <button id="scale" class="btnControl"><i class="fas fa-expand-alt"></i></button>
-                <button id="rotate" class="btnControl"><i class="fas fa-sync"></i></button>
-            </div>
-            <button id="clear" class="btnControl btnOption"><i class="fas fa-trash-alt"></i></button>
+            <button id="camera" class="btnControl btnOption btn-gr-start btn-gr-end">
+                <i class="fas fa-video"></i>
+                <span class="tooltiptext">Camera</span></button>
+            <button id="translate" class="btnControl btnOption btn-gr-start"><i class="fas fa-arrows-alt"></i><span
+                    class="tooltiptext">Translate</span></button>
+            <button id="scale" class="btnControl btnOption"><i class="fas fa-expand-alt"></i><span
+                    class="tooltiptext">Scale</span></button>
+            <button id="rotate" class="btnControl btnOption btn-gr-end"><i class="fas fa-sync"></i><span
+                    class="tooltiptext">Rotate</span></button>
+            <button id="clear" class="btnControl btnOption btn-gr-start btn-gr-end"><i
+                    class="fas fa-trash-alt"></i><span class="tooltiptext">Clear</span></button>
             <div id="gui"></div>
             <input type="file" hidden id="tex-choose" />
         </div>

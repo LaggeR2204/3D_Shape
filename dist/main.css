@@ -105,6 +105,19 @@ body {
   left: 2rem;
 }
 
+#translate {
+  top: 6rem;
+  left: 2rem;
+}
+#scale {
+  top: 9rem;
+  left: 2rem;
+}
+#rotate {
+  top: 12rem;
+  left: 2rem;
+}
+
 #transform {
   position: absolute;
   top: 6rem;
@@ -115,6 +128,15 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+.btn-gr-start {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+.btn-gr-end {
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 
 
@@ -135,10 +157,37 @@ body {
 .btnOption {
   position: absolute;
   z-index: 100;
-  border-radius: 0.5rem; 
 }
 
 .btnControl:hover {
   background-color: hsl(230deg, 100%, 80%);
 }
 
+.btnControl:hover .tooltiptext {
+  visibility: visible;
+}
+
+.tooltiptext {
+  visibility: hidden;
+  width: 12rem;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 0.6rem;
+  padding: 0.5rem 0;
+  position: absolute;
+  z-index: 100;
+  top: 0.2rem;
+  left: 110%;
+}
+
+.tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent black transparent transparent;
+}

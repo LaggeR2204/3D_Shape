@@ -5,6 +5,12 @@ import Sphere from "../Models/Sphere.js";
 import Icosahedron from "../Models/Icosahedron.js";
 import Torus from "../Models/Torus.js";
 import Teapot from "../Models/Teapot.js";
+import Dodecahedron from "../Models/Dodecahedron";
+import Octahedron from "../Models/Octahedron";
+import Tetrahedron from "../Models/Tetrahedron";
+import Lathe from "../Models/Lathe";
+import Tube from "../Models/Tube";
+import Extrude from "../Models/Extrude";
 import { getTexture } from "../Textures/Texture.js";
 import { Color, Mesh } from "three";
 export default class SceneState {
@@ -47,6 +53,24 @@ export default class SceneState {
       case "Teapot":
         this.curShape = new Teapot(2, 0x156289);
         break;
+      case "Dodecahedron":
+        this.curShape = new Dodecahedron();
+        break;
+      case "Octahedron":
+        this.curShape = new Octahedron();
+        break;
+      case "Tetrahedron":
+        this.curShape = new Tetrahedron();
+        break;
+      case "Lathe":
+        this.curShape = new Lathe();
+        break;
+      case "Tube":
+        this.curShape = new Tube();
+        break;
+      case "Extrude":
+        this.curShape = new Extrude();
+        break;
       default:
     }
     this.curShape.setMesh(this.curRenderMode, this.curTexture);
@@ -81,12 +105,13 @@ export default class SceneState {
     cb(this.curObject, oldObj);
   }
 
-  updateTexture(option, file = null) {
-    if (this.curTextureOption) {
-      this.curTexture.tex.dispose();
-    }
+  updateTexture(option, file = null, cb = null) {
     if (this.curTextureOption === option || !this.curObject) {
       return;
+    }
+
+    if (this.curTextureOption) {
+      this.curTexture.tex.dispose();
     }
 
     this.curTextureOption = option;
@@ -94,29 +119,42 @@ export default class SceneState {
 
     if (this.curTexture) {
       if (this.curObject instanceof Mesh) {
+        console.log("mesh");
         this.curObject.material.envMap = null;
         this.curObject.material.map = null;
         this.curObject.material[this.curTexture.option] = this.curTexture.tex;
         this.curObject.material.color = new Color(0xffffff);
+        this.curObject.material.needsUpdate = true;
+      } else {
+        console.log("no mesh");
+        this.curRenderMode = 0;
+        const oldPos = this.curObject.position;
+        const oldObj = this.curObject;
+        this.curShape.setMesh(this.curRenderMode, this.curTexture);
+        this.curObject = this.curShape.getMesh();
+        this.curObject.position.set(oldPos.x, oldPos.y, oldPos.z);
+        cb(this.curObject, oldObj);
       }
     } else {
       if (this.curObject instanceof Mesh) {
         this.curObject.material.color = new Color(0x156289);
         this.curObject.material.envMap = null;
         this.curObject.material.map = null;
+        this.curObject.material.needsUpdate = true;
       }
       this.curTextureOption = "";
-      this.curTexture = null;
+      // this.curTexture = null;
     }
-    this.curObject.material.needsUpdate = true;
   }
 
   updateRenderMode(renderMode = 0, cb = null) {
     this.curRenderMode = renderMode;
-    if (!this.curObject) return { result: false };
+    if (!this.curObject) return;
     const obj = this.curObject;
+    const oldPos = obj.position;
     this.curShape.setMesh(this.curRenderMode, this.curTexture);
     this.curObject = this.curShape.getMesh();
+    this.curObject.position.set(oldPos.x, oldPos.y, oldPos.z);
     cb(this.curObject, obj);
   }
 

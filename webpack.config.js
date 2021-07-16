@@ -33,9 +33,21 @@ module.exports = {
       OrbitControls$:
         "/node_modules/three/examples/jsm/controls/OrbitControls.js",
 
-      GUI$: "/node_modules/three/examples/jsm/libs/dat.gui.module.js",
+      // GUI$: "/node_modules/three/examples/jsm/libs/dat.gui.module.js",
+      GUI$: path.resolve(
+        __dirname,
+        "node_modules/three/examples/jsm/libs/dat.gui.module.js"
+      ),
       TransformControls$:
         "/node_modules/three/examples/jsm/controls/TransformControls.js",
+      Controls: path.resolve(
+        __dirname,
+        "node_modules/three/examples/jsm/controls/"
+      ),
+      CustomGeometry: path.resolve(
+        __dirname,
+        "node_modules/three/examples/jsm/geometries/"
+      ),
     },
   },
 };
