@@ -10,6 +10,7 @@ import {
   MeshPhongMaterial,
   Group,
   DoubleSide,
+  MeshLambertMaterial,
 } from "three";
 export default class Shape {
   // position = {
@@ -40,9 +41,9 @@ export default class Shape {
     if (texture) {
       const op = {};
       op[texture.option] = texture.tex;
-      material = new MeshBasicMaterial(op);
+      material = new MeshLambertMaterial(op);
     } else {
-      material = new MeshBasicMaterial({
+      material = new MeshLambertMaterial({
         color: this.color,
       });
     }

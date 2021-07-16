@@ -251,7 +251,10 @@ $(document).ready(function () {
   //event
 
   $("#clear").click(function () {
-    if (sceneState.curGUIFolder) gui.removeFolder(sceneState.curGUIFolder);
+    if (sceneState.curGUIFolder) {
+      gui.removeFolder(sceneState.curGUIFolder);
+      gui.hide();
+    }
     scene.remove(sceneState.curObject);
     camera.position.x = 0;
     camera.position.y = 0;
