@@ -11,17 +11,19 @@ Basic 3D modeling program using Three.js
   
 ## Installation
 
-Go to root folder, install project with npm
+Go to root folder, install and run project with npm
 
 ```bash
   npm install
-  npm run devstart
+  npm run build
+  npm run start
 ```
 or if you use yarn, run the following commands
 
 ```bash
-  yarn install
-  yarn devstart
+  yarn
+  yarn build
+  yarn start
 ```
     
 ## Authors
