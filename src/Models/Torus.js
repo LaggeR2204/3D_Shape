@@ -1,11 +1,11 @@
 import { TorusGeometry } from "three";
 import Shape from "./shape.js";
 export default class Torus extends Shape {
-  constructor(radius, tube, color = 0xffffff) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.data = {
-      radius: radius,
-      tube: tube,
+      radius: params.radius || 10,
+      tube: params.tube || 3,
       radialSegments: 16,
       tubularSegments: 100,
       arc: Math.PI * 2,

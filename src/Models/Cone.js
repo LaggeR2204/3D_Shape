@@ -1,11 +1,11 @@
 import { ConeGeometry } from "three";
 import Shape from "./shape.js";
 export default class Cone extends Shape {
-  constructor(radius, height, color = 0xffffff) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.data = {
-      radius: radius,
-      height: height,
+      radius: params.radius || 10,
+      height: params.height || 15,
       radialSegments: 8,
       heightSegments: 1,
       openEnded: false,

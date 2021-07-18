@@ -1,10 +1,10 @@
 import { SphereGeometry } from "three";
 import Shape from "./shape.js";
 export default class Sphere extends Shape {
-  constructor(radius, color = 0xffffff) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.data = {
-      radius: radius,
+      radius: params.radius || 10,
       widthSegments: 8,
       heightSegments: 6,
       phiStart: 0,

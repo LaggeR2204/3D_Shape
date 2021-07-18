@@ -18,8 +18,8 @@ class CustomSinCurve extends Curve {
 }
 
 export default class Tube extends Shape {
-  constructor(color = 0x156289) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.data = {
       segments: 20,
       radius: 2,

@@ -1,12 +1,12 @@
 import { BoxGeometry } from "three";
 import Shape from "./shape.js";
 export default class Cube extends Shape {
-  constructor(height, width, depth, color = 0xffffff) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.data = {
-      width: width,
-      height: height,
-      depth: depth,
+      width: params.width || 15,
+      height: params.height || 15,
+      depth: params.depth || 15,
       widthSegments: 1,
       heightSegments: 1,
       depthSegments: 1,

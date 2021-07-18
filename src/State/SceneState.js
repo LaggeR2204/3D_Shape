@@ -25,7 +25,7 @@ export default class SceneState {
     this.curRenderMode = 3;
     this.transformMode = "";
     this.speed = 0;
-    this.accelaretion = 0.001;
+    this.accelaretion = 0.002;
   }
 
   updateShape(gui, option, cb) {
@@ -34,43 +34,43 @@ export default class SceneState {
     // this.curRenderMode = parseInt(option.renderMode || 3);
     switch (option.shape) {
       case "Cube":
-        this.curShape = new Cube(3, 3, 3, 0xffff00);
+        this.curShape = new Cube({ color: 0xffff00 });
         break;
       case "Cone":
-        this.curShape = new Cone(3, 3, 0xffff00);
+        this.curShape = new Cone({ color: 0xffff00 });
         break;
       case "Cylinder":
-        this.curShape = new Cylinder(2, 2, 3, 0xffff00);
+        this.curShape = new Cylinder({ color: 0xffff00 });
         break;
       case "Sphere":
-        this.curShape = new Sphere(2, 0xffff00);
+        this.curShape = new Sphere({ color: 0xffff00 });
         break;
       case "Icosahedron":
-        this.curShape = new Icosahedron(2, 0xffff00);
+        this.curShape = new Icosahedron({ color: 0xffff00 });
         break;
       case "Torus":
-        this.curShape = new Torus(2, 0.5, 0xffff00);
+        this.curShape = new Torus({ color: 0xffff00 });
         break;
       case "Teapot":
-        this.curShape = new Teapot(2, 0xffff00);
+        this.curShape = new Teapot({ color: 0xffff00 });
         break;
       case "Dodecahedron":
-        this.curShape = new Dodecahedron();
+        this.curShape = new Dodecahedron({ color: 0xffff00 });
         break;
       case "Octahedron":
-        this.curShape = new Octahedron();
+        this.curShape = new Octahedron({ color: 0xffff00 });
         break;
       case "Tetrahedron":
-        this.curShape = new Tetrahedron();
+        this.curShape = new Tetrahedron({ color: 0xffff00 });
         break;
       case "Lathe":
-        this.curShape = new Lathe();
+        this.curShape = new Lathe({ color: 0xffff00 });
         break;
       case "Tube":
-        this.curShape = new Tube();
+        this.curShape = new Tube({ color: 0xffff00 });
         break;
       case "Extrude":
-        this.curShape = new Extrude();
+        this.curShape = new Extrude({ color: 0xffff00 });
         break;
       default:
     }
@@ -138,7 +138,7 @@ export default class SceneState {
       }
     } else {
       if (this.curObject instanceof Mesh) {
-        this.curObject.material.color = new Color(0x156289);
+        this.curObject.material.color = new Color(0xffff00);
         this.curObject.material.envMap = null;
         this.curObject.material.map = null;
         this.curObject.material.needsUpdate = true;

@@ -1,12 +1,12 @@
 import { CylinderGeometry } from "three";
 import Shape from "./shape.js";
 export default class Cylinder extends Shape {
-  constructor(radiusBottom, radiusTop, height, color = 0xffffff) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.data = {
-      radiusTop: radiusTop,
-      radiusBottom: radiusBottom,
-      height: height,
+      radiusTop: params.radiusTop || 5,
+      radiusBottom: params.radiusBottom || 5,
+      height: params.height || 10,
       radialSegments: 8,
       heightSegments: 1,
       openEnded: false,

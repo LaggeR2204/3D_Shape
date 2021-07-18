@@ -1,11 +1,11 @@
 import { IcosahedronGeometry } from "three";
 import Shape from "./shape.js";
 export default class Icosahedron extends Shape {
-  constructor(radius, color = 0xffffff) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.data = {
-      radius: radius,
-      detail: 0,
+      radius: params.radius || 10,
+      detail: params.detail || 0,
     };
     this.setMesh();
   }

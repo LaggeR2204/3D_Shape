@@ -2,10 +2,10 @@ import { TeapotGeometry } from "CustomGeometry/TeapotGeometry.js";
 
 import Shape from "./shape.js";
 export default class Teapot extends Shape {
-  constructor(size, color = 0xffffff) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.data = {
-      size: size,
+      size: params.size || 7,
     };
     this.setMesh();
   }

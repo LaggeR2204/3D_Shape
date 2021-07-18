@@ -1,11 +1,11 @@
 import { DodecahedronGeometry } from "three";
 import Shape from "./shape.js";
 export default class Dodecahedron extends Shape {
-  constructor(radius = 5, detail = 0, color = 0x156289) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.data = {
-      radius: radius,
-      detail: detail,
+      radius: params.radius || 10,
+      detail: params.detail || 0,
     };
     // this.setMesh();
   }

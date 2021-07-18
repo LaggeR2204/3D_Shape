@@ -30,7 +30,7 @@ $(document).ready(function () {
     75,
     $("#canvas-container").innerWidth() / $("#canvas-container").innerHeight(),
     0.1,
-    50
+    200
   );
 
   const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -43,18 +43,19 @@ $(document).ready(function () {
   );
   $("#canvas-container").append(renderer.domElement);
 
-  camera.position.z = 10;
+  camera.position.z = 30;
+  camera.position.y = 10;
   var mouse = {
     x: 0,
     y: 0,
   };
 
   //DEFAULT PLANE
-  let plane = new THREE.PlaneGeometry(20, 20, 20, 20);
+  let plane = new THREE.PlaneGeometry(60, 60, 60, 60);
   let mat = new THREE.MeshLambertMaterial({ color: 0x666666 });
   let planeMesh = new THREE.Mesh(plane, mat);
   planeMesh.rotation.x = -Math.PI / 2;
-  planeMesh.position.y = -4;
+  planeMesh.position.y = -14;
   planeMesh.castShadow = false;
   planeMesh.receiveShadow = true;
   scene.add(planeMesh);
@@ -90,7 +91,7 @@ $(document).ready(function () {
   lights[0] = new THREE.PointLight(0xffffff);
   lights[1] = new THREE.AmbientLight(0xffffff, 0.2);
 
-  lights[0].position.set(3, 3, 3);
+  lights[0].position.set(22, 20, 20);
   var sphereSize = 0.1;
   var pointLightHelper = new THREE.PointLightHelper(lights[0], sphereSize);
 
@@ -202,7 +203,7 @@ $(document).ready(function () {
     if (animationOption.isAnimateBouncing) {
       sceneState.speed -= sceneState.accelaretion;
       animationOption.positionY += sceneState.speed;
-      if (animationOption.positionY < -2) sceneState.speed = -sceneState.speed;
+      if (animationOption.positionY < -4) sceneState.speed = -sceneState.speed;
       updateMeshAnimation();
     }
     requestAnimationFrame(animate);
@@ -240,6 +241,7 @@ $(document).ready(function () {
   }
 
   function updateAnimation(option) {
+    if (!sceneState.curObject) return;
     switch (option) {
       case "Auto Rotate":
         animationOption.isAnimateRotating = !animationOption.isAnimateRotating;
@@ -277,7 +279,7 @@ $(document).ready(function () {
     }
 
     if (lightOption.lightsource) {
-      lights[0].position.set(3, 3, 2);
+      lights[0].position.set(22, 20, 20);
     } else {
       lights[0].position.set(
         lightOption.lightingPosX,
@@ -317,7 +319,7 @@ $(document).ready(function () {
       fogFolder.remove(fogFarItem);
     }
     scene.background = new THREE.Color(fogOption.color);
-    scene.fog = new THREE.Fog(fogOption.color, fogOption.near, fogOption.far);
+    scene.fog = new THREE.Fog(fogOption.color, fogOption.near, 60);
     fogNearItem = fogFolder
       .add(scene.fog, "near", fogOption.near, fogOption.far)
       .name("Near")
@@ -370,9 +372,7 @@ $(document).ready(function () {
       gui.hide();
     }
     scene.remove(sceneState.curObject);
-    camera.position.x = 0;
-    camera.position.y = 0;
-    camera.position.z = 10;
+    camera.position.set(0, 10, 30);
     camera.lookAt(0, 0, -1);
     sceneState.clear();
     gui.hide();

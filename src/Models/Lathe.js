@@ -1,8 +1,8 @@
 import { LatheGeometry, Vector2 } from "three";
 import Shape from "./shape.js";
 export default class Lathe extends Shape {
-  constructor(color = 0x156289) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.points = [];
 
     for (let i = 0; i < 10; i++) {

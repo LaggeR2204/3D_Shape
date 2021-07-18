@@ -1,8 +1,8 @@
-import { ExtrudeGeometry, Shape } from "three";
+import { ExtrudeGeometry, Shape, Vector3 } from "three";
 import Shape1 from "./shape.js";
 export default class Extrude extends Shape1 {
-  constructor(color = 0x156289) {
-    super(color);
+  constructor(params) {
+    super(params.color || 0xffffff);
     this.data = {
       steps: 2,
       depth: 16,
@@ -30,7 +30,13 @@ export default class Extrude extends Shape1 {
   }
 
   setMesh(renderMode = 3, texture = null) {
-    super.createMesh(this.getGeometry(), renderMode, texture);
+    super.createMesh(this.getGeometry(), renderMode, texture, {
+      position: {
+        x: -5,
+        y: -5,
+        z: -5,
+      },
+    });
   }
 
   createGUI(gui, callback) {
