@@ -203,7 +203,8 @@ $(document).ready(function () {
     if (animationOption.isAnimateBouncing) {
       sceneState.speed -= sceneState.accelaretion;
       animationOption.positionY += sceneState.speed;
-      if (animationOption.positionY < -4) sceneState.speed = -sceneState.speed;
+      if (animationOption.positionY < animationOption.startPosition.y - 4)
+        sceneState.speed = -sceneState.speed;
       updateMeshAnimation();
     }
     requestAnimationFrame(animate);
@@ -242,6 +243,10 @@ $(document).ready(function () {
 
   function updateAnimation(option) {
     if (!sceneState.curObject) return;
+    animationOption.positionX = sceneState.curObject.position.x;
+    animationOption.positionY = sceneState.curObject.position.y;
+    animationOption.positionZ = sceneState.curObject.position.z;
+    animationOption.startPosition.y = sceneState.curObject.position.y;
     switch (option) {
       case "Auto Rotate":
         animationOption.isAnimateRotating = !animationOption.isAnimateRotating;
@@ -260,6 +265,7 @@ $(document).ready(function () {
         animationOption.positionX = 0;
         animationOption.positionY = 0;
         animationOption.positionZ = 0;
+        animationOption.startPosition = { x: 0, y: 0, z: 0 };
         updateMeshAnimation();
         animationOption.isAnimateRotating = false;
         animationOption.isAnimateBouncing = false;
@@ -367,6 +373,21 @@ $(document).ready(function () {
   //event
 
   $("#clear").click(function () {
+    if (
+      animationOption.isAnimateRotating ||
+      animationOption.isAnimateBouncing
+    ) {
+      animationOption.rotationX = 0;
+      animationOption.rotationY = 0;
+      animationOption.rotationZ = 0;
+      animationOption.positionX = 0;
+      animationOption.positionY = 0;
+      animationOption.positionZ = 0;
+      updateMeshAnimation();
+      animationOption.isAnimateRotating = false;
+      animationOption.isAnimateBouncing = false;
+    }
+
     if (sceneState.curGUIFolder) {
       gui.removeFolder(sceneState.curGUIFolder);
       gui.hide();

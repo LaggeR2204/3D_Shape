@@ -4,7 +4,7 @@
   "description": "",
   "private": "true",
   "scripts": {
-    "build": "webpack",
+    "build": "npx webpack --config webpack.config.js",
     "watch": "webpack --watch",
     "devstart": "webpack serve --open"
   },
